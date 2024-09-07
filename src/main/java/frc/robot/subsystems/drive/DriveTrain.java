@@ -6,7 +6,7 @@ package frc.robot.subsystems.drive;
 
 import java.util.function.DoubleSupplier;
 
-import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -17,10 +17,10 @@ import frc.robot.Constants.RioCANIDs;
 
 public class DriveTrain extends SubsystemBase {
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP);
-  private final TalonFX m_frontLeft = new TalonFX(RioCANIDs.kDriveFrontLeft);
-  private final TalonFX m_backLeft = new TalonFX(RioCANIDs.kDriveBackLeft);
-  private final TalonFX m_frontRight = new TalonFX(RioCANIDs.kDriveFrontRight);
-  private final TalonFX m_backRight = new TalonFX(RioCANIDs.kDriveBackRight);
+  private final WPI_TalonSRX m_frontLeft = new WPI_TalonSRX(RioCANIDs.kDriveFrontLeft);
+  private final WPI_TalonSRX m_backLeft = new WPI_TalonSRX(RioCANIDs.kDriveBackLeft);
+  private final WPI_TalonSRX m_frontRight = new WPI_TalonSRX(RioCANIDs.kDriveFrontRight);
+  private final WPI_TalonSRX m_backRight = new WPI_TalonSRX(RioCANIDs.kDriveBackRight);
   private final MecanumDrive m_robotDrive;
 
   /**
