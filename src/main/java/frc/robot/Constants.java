@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 /**
@@ -79,10 +78,9 @@ public final class Constants {
      *         side angle is returned if the alliance is not known.
      */
     public double getOffsetDegrees() {
-      return DriverStation.getAlliance()
-          .orElse(Alliance.Blue) == Alliance.Blue
-              ? m_blueOffsetDegrees
-              : m_redOffsetDegrees;
+      return RobotUtilities.getAlliance() == Alliance.Blue
+          ? m_blueOffsetDegrees
+          : m_redOffsetDegrees;
     }
   }
 }

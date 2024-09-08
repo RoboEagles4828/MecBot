@@ -70,6 +70,12 @@ public class RobotContainer {
     m_autoChooser.addOption(
         "Simple Leave",
         () -> Autos.simpleLeaveAuto(m_driveTrain));
+    m_autoChooser.addOption(
+        "Source Side Score And Leave",
+        () -> Autos.sourceSideScoreAndLeave(m_driveTrain));
+    m_autoChooser.addOption(
+        "Amp Side Score And Leave",
+        () -> Autos.ampSideScoreAndLeave(m_driveTrain));
   }
 
   /**
