@@ -57,15 +57,8 @@ public class DriveTrain extends SubsystemBase {
     m_frontRight.setInverted(true);
     m_backRight.setInverted(true);
     m_robotDrive = new MecanumDrive(m_frontLeft, m_backLeft, m_frontRight, m_backRight);
-  }
-
-  /**
-   * Creates a new DriveTrain with a custom input deadband and maximum output.
-   */
-  public DriveTrain(final double inputDeadband, final double maxOutput) {
-    this();
-    m_robotDrive.setDeadband(inputDeadband);
-    m_robotDrive.setMaxOutput(maxOutput);
+    m_robotDrive.setDeadband(DriveConstants.kInputDeadband);
+    m_robotDrive.setMaxOutput(DriveConstants.kMaxOutput);
   }
 
   /**
@@ -121,7 +114,7 @@ public class DriveTrain extends SubsystemBase {
   void driveCartesian(final double xSpeed, final double ySpeed, final double zRotation) {
     final Rotation2d gyroAngle = m_fieldRelative
         ? m_gyro.getRotation2d()
-        : DriveConstants.GYRO_ANGLE_FOR_ROBOT_RELATIVE;
+        : DriveConstants.kGyroAngleForRobotRelative;
     m_robotDrive.driveCartesian(
         xSpeed,
         ySpeed,

@@ -5,7 +5,10 @@
 package frc.robot.subsystems.drive;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.drive.RobotDriveBase;
 
 public final class DriveConstants {
-    static final Rotation2d GYRO_ANGLE_FOR_ROBOT_RELATIVE = new Rotation2d();
+    static final Rotation2d kGyroAngleForRobotRelative = new Rotation2d();
+    static final double kInputDeadband = RobotDriveBase.kDefaultDeadband;
+    static final double kMaxOutput = RobotDriveBase.kDefaultMaxOutput;
 }
