@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,6 +23,25 @@ public class DriveTrain extends SubsystemBase {
   private final WPI_TalonSRX m_frontRight = new WPI_TalonSRX(RioCANIDs.kDriveFrontRight);
   private final WPI_TalonSRX m_backRight = new WPI_TalonSRX(RioCANIDs.kDriveBackRight);
   private final MecanumDrive m_robotDrive;
+  private boolean m_fieldRelative = true;
+
+  /**
+   * This should rarely, if ever, be changed to robot relative and then for only a
+   * short time.
+   * 
+   * @return true (the default) if driving field relative.
+   */
+  public boolean isFieldRelative() {
+    return this.m_fieldRelative;
+  }
+
+  /**
+   * @param fieldRelative true to use field relative driving (default and
+   *                      preferred), or false to use robot relative driving.
+   */
+  public void setFieldRelative(final boolean fieldRelative) {
+    this.m_fieldRelative = fieldRelative;
+  }
 
   /**
    * Creates a new DriveTrain with the default input deadband and maximum output
@@ -72,15 +92,20 @@ public class DriveTrain extends SubsystemBase {
   }
 
   /**
-   * @return a simple command to just leave the starting zone during auto.
+   * The returned command will run until cancelled.
+   * 
+   * @param xSpeed The robot's speed along the X axis [-1.0..1.0]. Forward is
+   *               positive.
+   * @param ySpeed The robot's speed along the Y axis [-1.0..1.0]. Left is
+   *               positive.
+   * @return a new command to drive straight on the given x,y vector without
+   *         rotation.
    */
-  public Command leaveStartingZoneAutoCommand() {
-    return run(() -> m_robotDrive
-        .driveCartesian(
-            DriveConstants.kSimpleLeaveAutoSpeed,
-            0.0,
-            0.0))
-        .withTimeout(DriveConstants.kSimpleLeaveAutoTimeSec);
+  public Command getDriveStraightCommand(final double xSpeed, final double ySpeed) {
+    return run(() -> m_robotDrive.driveCartesian(
+        xSpeed,
+        ySpeed,
+        0.0));
   }
 
   /**
@@ -94,11 +119,14 @@ public class DriveTrain extends SubsystemBase {
    *                  Counterclockwise is positive.
    */
   void driveCartesian(final double xSpeed, final double ySpeed, final double zRotation) {
+    final Rotation2d gyroAngle = m_fieldRelative
+        ? m_gyro.getRotation2d()
+        : DriveConstants.GYRO_ANGLE_FOR_ROBOT_RELATIVE;
     m_robotDrive.driveCartesian(
         xSpeed,
         ySpeed,
         zRotation,
-        m_gyro.getRotation2d());
+        gyroAngle);
   }
 
   @Override
