@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import java.util.function.Supplier;
+
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -24,12 +28,17 @@ public class RobotContainer {
   private final CommandXboxController m_driverController = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
 
+  private final SendableChooser<Supplier<Command>> m_autoChooser = new SendableChooser<>();
+
   /**
-   * The container for the robot. Contains subsystems, OI devices, and command bindings.
+   * The container for the robot. Contains subsystems, OI devices, and command
+   * bindings.
    */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    populateAutoChooser();
+    SmartDashboard.putData("Auto choices", m_autoChooser);
   }
 
   /**
@@ -52,11 +61,23 @@ public class RobotContainer {
   }
 
   /**
+   * Adds all our automode suppliers to the dashboard chooser.
+   */
+  private void populateAutoChooser() {
+    m_autoChooser.setDefaultOption(
+        "Do Nothing",
+        () -> Autos.doNothingAuto(m_driveTrain));
+    m_autoChooser.addOption(
+        "Simple Leave",
+        () -> Autos.simpleLeaveAuto(m_driveTrain));
+  }
+
+  /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return Autos.simpleLeaveAuto(m_driveTrain);
+    return m_autoChooser.getSelected().get();
   }
 }
