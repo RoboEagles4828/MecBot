@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.drive.DriveTrain;
 
 public final class Autos {
@@ -14,10 +15,13 @@ public final class Autos {
    */
   public static Command simpleLeaveAuto(final DriveTrain driveTrain) {
     return driveTrain
-        .getDriveStraightCommand(
-            AutoConstants.kSimpleLeaveSpeed,
-            0.0)
-        .withTimeout(AutoConstants.kSimpleLeaveTimeSec);
+        .getSetStartupAngleCommand(Constants.StartingAngle.SQUARE.getOffsetDegrees())
+        .andThen(
+            driveTrain
+                .getDriveStraightCommand(
+                    AutoConstants.kSimpleLeaveSpeed,
+                    0.0)
+                .withTimeout(AutoConstants.kSimpleLeaveTimeSec));
   }
 
   /**

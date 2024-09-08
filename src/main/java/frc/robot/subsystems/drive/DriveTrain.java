@@ -85,6 +85,23 @@ public class DriveTrain extends SubsystemBase {
   }
 
   /**
+   * This command should be run once after starting the robot to properly set the
+   * gyro angle offset. As the very first thing in autonomous would be a
+   * reasonable choice.
+   * 
+   * <p>
+   * Note that the NavX gyro is clockwise positive. That is why the value is
+   * negated. If we change to a Pigeon, the negation will need to be removed.
+   * 
+   * @param startupAngle start up angle in standard FRC counter clockwise positive
+   *                     orientation.
+   * @return a newly created set startup angle command.
+   */
+  public Command getSetStartupAngleCommand(final double startupAngle) {
+    return runOnce(() -> m_gyro.setAngleAdjustment(-startupAngle));
+  }
+
+  /**
    * The returned command will run until cancelled.
    * 
    * @param xSpeed The robot's speed along the X axis [-1.0..1.0]. Forward is
@@ -102,6 +119,22 @@ public class DriveTrain extends SubsystemBase {
   }
 
   /**
+   * This command MUST only be used when pointing straight up the field (intake
+   * away from driver). Use the field sidewall or other structure to get straight
+   * before running this.
+   * 
+   * @return a newly created reset gyro command.
+   */
+  public Command getResetGyroCommand() {
+    return run(() -> {
+      // Resets gyro yaw but not the angle adjustment.
+      m_gyro.reset();
+      // Reset the angle adjustment too.
+      m_gyro.setAngleAdjustment(0.0);
+    });
+  }
+
+  /**
    * The configured (or default) deadbands and maximums will be enforced.
    *
    * @param xSpeed    The robot's speed along the X axis [-1.0..1.0]. Forward is
@@ -112,6 +145,10 @@ public class DriveTrain extends SubsystemBase {
    *                  Counterclockwise is positive.
    */
   void driveCartesian(final double xSpeed, final double ySpeed, final double zRotation) {
+    /*
+     * Note that the NavX getRotation2d API is the one place where it returns the
+     * angle in CCW+. No negation needed here.
+     */
     final Rotation2d gyroAngle = m_fieldRelative
         ? m_gyro.getRotation2d()
         : DriveConstants.kGyroAngleForRobotRelative;
