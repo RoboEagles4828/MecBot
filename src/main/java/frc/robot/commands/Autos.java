@@ -10,8 +10,26 @@ import frc.robot.subsystems.drive.DriveTrain;
 
 public final class Autos {
   /**
+   * Place the robot on the field against the alliance wall with the intake
+   * pointing away from the wall. This auto will do nothing but set the starting
+   * angle.
+   * 
    * @param driveTrain the robot's drive train.
-   * @return a command to drive straight up field to leave the starting zone.
+   * @return an auto command to do nothing.
+   */
+  public static Command doNothingAuto(final DriveTrain driveTrain) {
+    return driveTrain
+        .getSetStartupAngleCommand(Constants.StartingAngle.SQUARE.getOffsetDegrees());
+  }
+
+  /**
+   * Place the robot on the field against the alliance wall with the intake
+   * pointing away from the wall. This auto will simply drive forward to leave the
+   * starting zone.
+   * 
+   * @param driveTrain the robot's drive train.
+   * @return an auto command to drive straight up field to leave the starting
+   *         zone.
    */
   public static Command simpleLeaveAuto(final DriveTrain driveTrain) {
     return driveTrain
