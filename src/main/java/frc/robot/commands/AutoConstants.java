@@ -24,6 +24,14 @@ public final class AutoConstants {
      * All values are positive. The caller will need to make sure the signs of the
      * applied speeds (especially Y sign as it varies by alliance).
      * 
+     * <p>
+     * TODO - Note that there is a good chance this method of calculating speeds for
+     * a X by Y movement will not work well enough. It depends on this being the
+     * correct equation and on a well balance drive train. Either or both could not
+     * be the case. If it is off a little, tweaking the distances aboue may be okay.
+     * If off by a lot, get rid of this and just switch to speed constants that can
+     * be tweaked.
+     * 
      * @param xMeters the number of meters to move in the X direction.
      * @param yMeters the number of meters to move in the Y direction.
      * @return a array of two doubles (x,y) of the speeds to use.
