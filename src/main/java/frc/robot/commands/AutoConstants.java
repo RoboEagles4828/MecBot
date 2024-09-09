@@ -11,12 +11,14 @@ public final class AutoConstants {
     static final double kSourceSideLeaveXMeters = 2.0;
     static final double kSourceSideLeaveYMeters = 3.6;
     /** (x,y) - magnitudes only, apply proper sign to y based on alliance. */
+    // static final double[] kSourceSideLeaveSpeeds = { 0.48, 0.87 };
     static final double[] kSourceSideLeaveSpeeds = calculateSpeeds(kSourceSideLeaveXMeters, kSourceSideLeaveYMeters);
     static final double kSourceSideLeaveTimeSec = 2.0;
 
     static final double kAmpSideLeaveXMeters = 2.0;
     static final double kAmpSideLeaveYMeters = 1.5;
     /** (x,y) - magnitudes only, apply proper sign to y based on alliance. */
+    // static final double[] kAmpSideLeaveSpeeds = { 0.8, 0.6 };
     static final double[] kAmpSideLeaveSpeeds = calculateSpeeds(kAmpSideLeaveXMeters, kAmpSideLeaveYMeters);
     static final double kAmpSideLeaveTimeSec = 1.5;
 
