@@ -112,7 +112,7 @@ public class DriveTrain extends SubsystemBase {
    *         rotation.
    */
   public Command getDriveStraightCommand(final double xSpeed, final double ySpeed) {
-    return run(() -> m_robotDrive.driveCartesian(
+    return run(() -> driveCartesian(
         xSpeed,
         ySpeed,
         0.0));
