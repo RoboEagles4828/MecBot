@@ -58,6 +58,14 @@ public class RobotContainer {
             () -> -m_driverController.getLeftY(),
             () -> -m_driverController.getLeftX(),
             () -> -m_driverController.getRightX()));
+
+    /*
+     * Resetting the gyro should be rare, difficult to do accidently, and the robot
+     * must be stationary. Use these two buttons pressed at the same time to help
+     * accomplish these goals.
+     */
+    m_driverController.povDown().and(m_driverController.a())
+        .onTrue(m_driveTrain.getResetGyroCommand());
   }
 
   /**
