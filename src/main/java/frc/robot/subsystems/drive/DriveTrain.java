@@ -6,12 +6,14 @@ package frc.robot.subsystems.drive;
 
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.RioCANIDs;
@@ -50,12 +52,10 @@ public class DriveTrain extends SubsystemBase {
    * {@link edu.wpi.first.wpilibj.drive.RobotDriveBase#kDefaultMaxOutput}.
    */
   public DriveTrain() {
-    // Left side not inverted.
-    m_frontLeft.setInverted(false);
-    m_backLeft.setInverted(false);
-    // Right side inverted.
-    m_frontRight.setInverted(true);
-    m_backRight.setInverted(true);
+    configureMotor(m_frontLeft);
+    configureMotor(m_backLeft);
+    configureMotor(m_frontRight);
+    configureMotor(m_backRight);
     m_robotDrive = new MecanumDrive(m_frontLeft, m_backLeft, m_frontRight, m_backRight);
     m_robotDrive.setDeadband(DriveConstants.kInputDeadband);
     m_robotDrive.setMaxOutput(DriveConstants.kMaxOutput);
@@ -126,7 +126,7 @@ public class DriveTrain extends SubsystemBase {
    * @return a newly created reset gyro command.
    */
   public Command getResetGyroCommand() {
-    return run(() -> {
+    return runOnce(() -> {
       // Resets gyro yaw but not the angle adjustment.
       m_gyro.reset();
       // Reset the angle adjustment too.
@@ -159,8 +159,20 @@ public class DriveTrain extends SubsystemBase {
         gyroAngle);
   }
 
+  /**
+   * Used to configure each motor to the same initial conditions.
+   * 
+   * @param motor the motor to configure.
+   */
+  private void configureMotor(final WPI_TalonSRX motor) {
+    motor.setInverted(false);
+    motor.setNeutralMode(NeutralMode.Brake);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Heading", -m_gyro.getAngle());
+    SmartDashboard.putBoolean("Field Relative", m_fieldRelative);
   }
 }

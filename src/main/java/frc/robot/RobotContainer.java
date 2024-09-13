@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
@@ -56,8 +57,8 @@ public class RobotContainer {
     m_driveTrain.setDefaultCommand(
         m_driveTrain.getDriveCommand(
             () -> -m_driverController.getLeftY(),
-            () -> -m_driverController.getLeftX(),
-            () -> -m_driverController.getRightX()));
+            () -> m_driverController.getLeftX(),
+            () -> m_driverController.getRightX()));
 
     /*
      * Resetting the gyro should be rare, difficult to do accidently, and the robot
@@ -66,6 +67,13 @@ public class RobotContainer {
      */
     m_driverController.povDown().and(m_driverController.a())
         .onTrue(m_driveTrain.getResetGyroCommand());
+
+    /*
+     * As long the left bumper is held, drive robot relative.
+     */
+    m_driverController.leftBumper()
+        .onTrue(Commands.runOnce(() -> m_driveTrain.setFieldRelative(false)))
+        .onFalse(Commands.runOnce(() -> m_driveTrain.setFieldRelative(true)));
   }
 
   /**

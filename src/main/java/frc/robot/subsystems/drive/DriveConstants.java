@@ -9,6 +9,6 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase;
 
 public final class DriveConstants {
     static final Rotation2d kGyroAngleForRobotRelative = new Rotation2d();
-    static final double kInputDeadband = RobotDriveBase.kDefaultDeadband;
+    static final double kInputDeadband = 0.05; // RobotDriveBase.kDefaultDeadband;
     static final double kMaxOutput = RobotDriveBase.kDefaultMaxOutput;
 }
