@@ -53,7 +53,7 @@ public final class Autos {
    * @return an auto source side command to score and leave the starting zone.
    */
   public static Command sourceSideScoreAndLeave(final DriveTrain driveTrain) {
-    final double ySign = RobotUtilities.getAlliance() == Alliance.Red ? 1.0 : -1.0;
+    final double ySign = RobotUtilities.getAlliance() == Alliance.Red ? -1.0 : 1.0;
     return driveTrain
         .getSetStartupAngleCommand(Constants.StartingAngle.SUBWOOFER_SOURCE_SIDE.getOffsetDegrees())
         // TODO add command(s) to shoot
@@ -74,7 +74,7 @@ public final class Autos {
    * @return an auto amp side command to score and leave the starting zone.
    */
   public static Command ampSideScoreAndLeave(final DriveTrain driveTrain) {
-    final double ySign = RobotUtilities.getAlliance() == Alliance.Blue ? 1.0 : -1.0;
+    final double ySign = RobotUtilities.getAlliance() == Alliance.Blue ? -1.0 : 1.0;
     return driveTrain
         .getSetStartupAngleCommand(Constants.StartingAngle.SUBWOOFER_AMP_SIDE.getOffsetDegrees())
         // TODO add command(s) to shoot
