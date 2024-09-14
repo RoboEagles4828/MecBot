@@ -45,6 +45,14 @@ public final class Constants {
     public static final int kIntake = 9;
   }
 
+
+  /**
+   * Digital IO ids
+   */
+  public static class DigitalIDs {
+    public static final int kBeamBreak = 9;
+  }
+
   /**
    * There are multiple coordinate systems on an FRC field. For field relative
    * driving, the coordinate system (as viewed from the driver station) point

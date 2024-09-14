@@ -6,15 +6,18 @@ package frc.robot;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.DigitalIDs;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.subsystems.drive.DriveTrain;
+import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.Shooter;
 import edu.wpi.first.math.MathUtil;
 
@@ -28,9 +31,13 @@ import edu.wpi.first.math.MathUtil;
 public class RobotContainer {
   private final DriveTrain m_driveTrain = new DriveTrain();
   private final Shooter m_shooter = new Shooter();
+  private final Intake m_intake = new Intake();
 
   private final CommandXboxController m_driverController = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
+
+  private boolean lastBeamBreakValue = false;
+  private final DigitalInput beamBreak = new DigitalInput(DigitalIDs.kBeamBreak);
 
   private final SendableChooser<Supplier<Command>> m_autoChooser = new SendableChooser<>();
 
@@ -80,8 +87,19 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(() -> m_driveTrain.setFieldRelative(false)))
         .onFalse(Commands.runOnce(() -> m_driveTrain.setFieldRelative(true)));
 
-    m_driverController.leftTrigger().onTrue(m_shooter.getIntakeCommand()).onFalse(m_shooter.getStopCommand());
-    m_driverController.rightTrigger().onTrue(m_shooter.getShootCommand()).onFalse(m_shooter.getStopCommand());
+    m_driverController.leftTrigger()
+        .onTrue(
+          m_shooter.getIntakeCommand().alongWith(m_intake.getIntakeCommand()).until(beamBreak::get)
+        ).onFalse(
+          m_shooter.getStopCommand().alongWith(m_intake.getStopCommand())
+        );
+    
+    m_driverController.rightTrigger()
+        .onTrue(
+          m_shooter.getShootCommand().alongWith(m_intake.getShootCommand())
+        ).onFalse(
+          m_shooter.getStopCommand().alongWith(m_intake.getStopCommand())
+        );
   }
 
   /**
