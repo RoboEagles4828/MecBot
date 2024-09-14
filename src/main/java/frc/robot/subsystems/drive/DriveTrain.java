@@ -147,10 +147,13 @@ public class DriveTrain extends SubsystemBase {
   void driveCartesian(final double xSpeed, final double ySpeed, final double zRotation) {
     /*
      * Note that the NavX getRotation2d API is the one place where it returns the
-     * angle in CCW+. No negation needed here.
+     * angle in CCW+, so no negation should be needed here. However, the underlying
+     * driveCartesian code negates via unaryMinus, apparently assuming a CW+ gyro
+     * even though the javadoc says the Z rotation in CCW+ (ugh!). So, beat them to
+     * the punch here by doing unary minus first.
      */
     final Rotation2d gyroAngle = m_fieldRelative
-        ? m_gyro.getRotation2d()
+        ? m_gyro.getRotation2d().unaryMinus()
         : DriveConstants.kGyroAngleForRobotRelative;
     m_robotDrive.driveCartesian(
         xSpeed,
