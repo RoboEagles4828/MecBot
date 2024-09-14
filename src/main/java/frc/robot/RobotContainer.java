@@ -36,7 +36,6 @@ public class RobotContainer {
   private final CommandXboxController m_driverController = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
 
-  private boolean lastBeamBreakValue = false;
   private final DigitalInput beamBreak = new DigitalInput(DigitalIDs.kBeamBreak);
 
   private final SendableChooser<Supplier<Command>> m_autoChooser = new SendableChooser<>();
@@ -89,7 +88,11 @@ public class RobotContainer {
 
     m_driverController.leftTrigger()
         .onTrue(
-          m_shooter.getIntakeCommand().alongWith(m_intake.getIntakeCommand()).until(beamBreak::get)
+          m_shooter.getIntakeCommand().alongWith(m_intake.getIntakeCommand())
+            .until(beamBreak::get)
+            .andThen(
+              m_shooter.getStopCommand().alongWith(m_intake.getStopCommand())
+            )
         ).onFalse(
           m_shooter.getStopCommand().alongWith(m_intake.getStopCommand())
         );
