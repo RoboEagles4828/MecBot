@@ -32,6 +32,16 @@ public final class Constants {
     public static final int kDriveBackLeft = 2;
     public static final int kDriveFrontRight = 3;
     public static final int kDriveBackRight = 4;
+
+    public static final int kShooterRight = 5;
+    public static final int kShooterLeft = 6;
+  }
+
+  /**
+   * Ids on the PWM boards
+   */
+  public static class PWMIDs {
+    public static final int kIntake = 9;
   }
 
   /**

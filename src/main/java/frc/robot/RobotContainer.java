@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.subsystems.drive.DriveTrain;
+import frc.robot.subsystems.shooter.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -25,6 +26,7 @@ import frc.robot.subsystems.drive.DriveTrain;
  */
 public class RobotContainer {
   private final DriveTrain m_driveTrain = new DriveTrain();
+  private final Shooter m_shooter = new Shooter();
 
   private final CommandXboxController m_driverController = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
@@ -74,6 +76,9 @@ public class RobotContainer {
     m_driverController.leftBumper()
         .onTrue(Commands.runOnce(() -> m_driveTrain.setFieldRelative(false)))
         .onFalse(Commands.runOnce(() -> m_driveTrain.setFieldRelative(true)));
+
+    m_driverController.leftTrigger().onTrue(m_shooter.getIntakeCommand()).onFalse(m_shooter.getStopCommand());
+    m_driverController.rightTrigger().onTrue(m_shooter.getShootCommand()).onFalse(m_shooter.getStopCommand());
   }
 
   /**
