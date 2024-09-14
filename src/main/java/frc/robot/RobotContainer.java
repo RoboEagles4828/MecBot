@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DigitalIDs;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.ShootCommands;
 import frc.robot.subsystems.drive.DriveTrain;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.shooter.Shooter;
@@ -86,22 +87,27 @@ public class RobotContainer {
         .onTrue(Commands.runOnce(() -> m_driveTrain.setFieldRelative(false)))
         .onFalse(Commands.runOnce(() -> m_driveTrain.setFieldRelative(true)));
 
+
+    /*
+     * Run the intake while the left trigger is pressed until the beam break is triggered.
+     */
     m_driverController.leftTrigger()
         .onTrue(
-          m_shooter.getIntakeCommand().alongWith(m_intake.getIntakeCommand())
+          ShootCommands.getIntakeCommand(m_shooter, m_intake)
             .until(beamBreak::get)
-            .andThen(
-              m_shooter.getStopCommand().alongWith(m_intake.getStopCommand())
-            )
+            .andThen(ShootCommands.getStopCommand(m_shooter, m_intake))
         ).onFalse(
-          m_shooter.getStopCommand().alongWith(m_intake.getStopCommand())
+          ShootCommands.getStopCommand(m_shooter, m_intake)
         );
     
+    /*
+     * Run the shooter while the right trigger is pressed.
+     */
     m_driverController.rightTrigger()
         .onTrue(
-          m_shooter.getShootCommand().alongWith(m_intake.getShootCommand())
+          ShootCommands.getShootCommand(m_shooter, m_intake)
         ).onFalse(
-          m_shooter.getStopCommand().alongWith(m_intake.getStopCommand())
+          ShootCommands.getStopCommand(m_shooter, m_intake)
         );
   }
 

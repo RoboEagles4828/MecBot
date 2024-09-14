@@ -59,9 +59,9 @@ public final class Autos {
     final double ySign = RobotUtilities.getAlliance() == Alliance.Red ? -1.0 : 1.0;
     return driveTrain
         .getSetStartupAngleCommand(Constants.StartingAngle.SUBWOOFER_SOURCE_SIDE.getOffsetDegrees())
-        .andThen(shooter.getShootCommand()).alongWith(intake.getShootCommand())
+        .andThen(ShootCommands.getShootCommand(shooter, intake))
         .andThen(new WaitCommand(AutoConstants.kShootDelay))
-        .andThen(shooter.getStopCommand()).alongWith(intake.getStopCommand())
+        .andThen(ShootCommands.getStopCommand(shooter, intake))
         .andThen(
             driveTrain
                 .getDriveStraightCommand(
@@ -82,9 +82,9 @@ public final class Autos {
     final double ySign = RobotUtilities.getAlliance() == Alliance.Blue ? -1.0 : 1.0;
     return driveTrain
         .getSetStartupAngleCommand(Constants.StartingAngle.SUBWOOFER_AMP_SIDE.getOffsetDegrees())
-        .andThen(shooter.getShootCommand()).alongWith(intake.getShootCommand())
+        .andThen(ShootCommands.getShootCommand(shooter, intake))
         .andThen(new WaitCommand(AutoConstants.kShootDelay))
-        .andThen(shooter.getStopCommand()).alongWith(intake.getStopCommand())
+        .andThen(ShootCommands.getStopCommand(shooter, intake))
         .andThen(
             driveTrain
                 .getDriveStraightCommand(
@@ -105,9 +105,9 @@ public final class Autos {
     // final double ySign = RobotUtilities.getAlliance() == Alliance.Blue ? -1.0 : 1.0;
     return driveTrain
         .getSetStartupAngleCommand(Constants.StartingAngle.SUBWOOFER_AMP_SIDE.getOffsetDegrees())
-        .andThen(shooter.getShootCommand()).alongWith(intake.getShootCommand())
+        .andThen(ShootCommands.getShootCommand(shooter, intake))
         .andThen(new WaitCommand(AutoConstants.kShootDelay))
-        .andThen(shooter.getStopCommand()).alongWith(intake.getStopCommand())
+        .andThen(ShootCommands.getStopCommand(shooter, intake))
         .andThen(
             driveTrain
                 .getDriveStraightCommand(
