@@ -16,6 +16,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.subsystems.drive.DriveTrain;
 import frc.robot.subsystems.shooter.Shooter;
+import edu.wpi.first.math.MathUtil;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -58,9 +59,11 @@ public class RobotContainer {
   private void configureBindings() {
     m_driveTrain.setDefaultCommand(
         m_driveTrain.getDriveCommand(
-            () -> -m_driverController.getLeftY(),
-            () -> m_driverController.getLeftX(),
-            () -> m_driverController.getRightX()));
+            () -> -MathUtil.applyDeadband(m_driverController.getLeftY(), OperatorConstants.kDriverControllerDeadband),
+            () -> MathUtil.applyDeadband(m_driverController.getLeftX(), OperatorConstants.kDriverControllerDeadband),
+            () -> MathUtil.applyDeadband(m_driverController.getRightX(), OperatorConstants.kDriverControllerDeadband)));
+
+    
 
     /*
      * Resetting the gyro should be rare, difficult to do accidently, and the robot
