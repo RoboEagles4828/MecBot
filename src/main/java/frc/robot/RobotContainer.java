@@ -117,10 +117,13 @@ public class RobotContainer {
         () -> Autos.simpleLeaveAuto(m_driveTrain));
     m_autoChooser.addOption(
         "Source Side Score And Leave",
-        () -> Autos.sourceSideScoreAndLeave(m_driveTrain));
+        () -> Autos.sourceSideScoreAndLeave(m_driveTrain, m_shooter, m_intake));
     m_autoChooser.addOption(
         "Amp Side Score And Leave",
-        () -> Autos.ampSideScoreAndLeave(m_driveTrain));
+        () -> Autos.ampSideScoreAndLeave(m_driveTrain, m_shooter, m_intake));
+    m_autoChooser.addOption(
+        "Middle Side Score And Leave",
+        () -> Autos.middleScoreAndLeave(m_driveTrain, m_shooter, m_intake));
   }
 
   /**

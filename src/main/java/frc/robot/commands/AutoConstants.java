@@ -11,6 +11,9 @@ public final class AutoConstants {
     static final double kSourceSideLeaveXMeters = 2.0;
     static final double kSourceSideLeaveYMeters = 3.6;
     /** (x,y) - magnitudes only, apply proper sign to y based on alliance. */
+    
+    
+    static final long kShootDelay = 1000;
     // static final double[] kSourceSideLeaveSpeeds = { 0.48, 0.87 };
     static final double[] kSourceSideLeaveSpeeds = calculateSpeeds(kSourceSideLeaveXMeters, kSourceSideLeaveYMeters);
     static final double kSourceSideLeaveTimeSec = 1.5;
@@ -22,6 +25,10 @@ public final class AutoConstants {
     static final double[] kAmpSideLeaveSpeeds = calculateSpeeds(kAmpSideLeaveXMeters, kAmpSideLeaveYMeters);
     static final double kAmpSideLeaveTimeSec = 1.0;
 
+    static final double[] kmiddleLeaveSpeeds = calculateSpeeds(kAmpSideLeaveXMeters, 0);
+    
+    static final double kmiddleLeaveXMeters = 1.0;
+    static final double kmiddleLeaveTimeSec = 1.0;
     /**
      * All values are positive. The caller will need to make sure the signs of the
      * applied speeds (especially Y sign as it varies by alliance).
