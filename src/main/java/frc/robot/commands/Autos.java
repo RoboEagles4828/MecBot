@@ -75,7 +75,7 @@ public final class Autos {
    * the intake pointing away from the subwoofer. This auto will shoot and then
    * leave the starting zone.
    * 
-   * @param driveTrain the robot's drive train. // TODO add the shooter and intake
+   * @param driveTrain the robot's drive train.
    * @return an auto amp side command to score and leave the starting zone.
    */
   public static Command ampSideScoreAndLeave(final DriveTrain driveTrain, final Shooter shooter, final Intake intake) {
@@ -83,14 +83,17 @@ public final class Autos {
     return driveTrain
         .getSetStartupAngleCommand(Constants.StartingAngle.SUBWOOFER_AMP_SIDE.getOffsetDegrees())
         .andThen(ShootCommands.getShootCommand(shooter, intake))
-        .andThen(new WaitCommand(AutoConstants.kShootDelay))
-        .andThen(ShootCommands.getStopCommand(shooter, intake))
         .andThen(
-            driveTrain
-                .getDriveStraightCommand(
-                    -AutoConstants.kAmpSideLeaveSpeeds[0], // This is inverted to make the bot go backwards
-                    AutoConstants.kAmpSideLeaveSpeeds[1] * ySign)
-                .withTimeout(AutoConstants.kAmpSideLeaveTimeSec));
+            new WaitCommand(AutoConstants.kShootDelay)
+            .andThen(ShootCommands.getStopCommand(shooter, intake))
+            .andThen(
+                driveTrain
+                    .getDriveStraightCommand(
+                        -AutoConstants.kAmpSideLeaveSpeeds[0], // This is inverted to make the bot go backwards
+                        AutoConstants.kAmpSideLeaveSpeeds[1] * ySign)
+                    .withTimeout(AutoConstants.kAmpSideLeaveTimeSec)
+            )
+        );
   }
 
   /**
